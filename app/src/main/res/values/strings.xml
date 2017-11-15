@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">Cooking</string>
+    <string name="title_activity_login">Sign in</string>
+
+    <!-- Strings related to login -->
+    <string name="wording_input_email">Email</string>
+    <string name="wording_input_password">Password</string>
+    <string name="wording_button_login">Log in</string>
+    <string name="wording_goto_signup">No account yet? Create one</string>
+    <string name="wording_skip_login">I dont\'t want an account yet</string>
+
+    <!-- Strings related to Singup -->
+    <string name="wording_input_name">Name</string>
+    <string name="wording_input_reenterpassword">Re-enter Password</string>
+    <string name="wording_button_singup">Create Account</string>
+    <string name="wording_goto_login">Already a member? Login</string>
+
+</resources>
