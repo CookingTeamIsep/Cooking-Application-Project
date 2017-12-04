@@ -1,69 +1,127 @@
 package isep.bcntt.cooking;
 
 import android.content.Context;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 
-public class RecipesAdapter extends RecyclerView.Adapter<RecipesAdapter.RecipeViewHolder> {
+import java.util.List;
 
-    private static final String TAG = RecipesAdapter.class.getSimpleName();
-    private static String[] mRecipesData;
-    private static RecipeAdapterOnClickHandler mClickHandler;
+import isep.bcntt.cooking.model.RecipeCard;
 
-    public RecipesAdapter(RecipeAdapterOnClickHandler clickHandler) {
-        mClickHandler = clickHandler;
-    }
+public class RecipesAdapter extends RecyclerView.Adapter<RecipesAdapter.recipeAdapterViewHolder> {
 
-    public void setmRecipesData(String[] recipesData) {
-        mRecipesData = recipesData;
-        notifyDataSetChanged();
-    }
+    private Context mContext;
+    private List<RecipeCard> recipeList;
+    private static RecipesAdapterOnClickHandler mRecipeCardClickHandler;
 
-    @Override
-    public RecipeViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
-        Context context = viewGroup.getContext();
-        int layoutIdForListItem = R.layout.recipes_list_item;
-        LayoutInflater inflater = LayoutInflater.from(context);
-
-        View view = inflater.inflate(layoutIdForListItem, viewGroup, false);
-        return new RecipeViewHolder(view);
+    public RecipesAdapter(Context mContext, List<RecipeCard> recipeList, RecipesAdapterOnClickHandler clickHandler) {
+        this.mContext = mContext;
+        this.recipeList = recipeList;
+        mRecipeCardClickHandler = clickHandler;
     }
 
     @Override
-    public void onBindViewHolder(RecipeViewHolder holder, int position) {
-        String recipeData = mRecipesData[position];
-        RecipeViewHolder.mRecipeTextView.setText(recipeData);
+    public recipeAdapterViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View itemView = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.recipe_card, parent, false);
+
+        return new recipeAdapterViewHolder(itemView);
+    }
+
+    @Override
+    public void onBindViewHolder(final recipeAdapterViewHolder holder, int position) {
+        RecipeCard recipe = recipeList.get(position);
+        holder.title.setText(recipe.getName());
+        holder.count.setText(recipe.getNumbreOfRatings() + " ratings");
+
+        // loading recipe cover using Glide library
+        Glide.with(mContext).load(recipe.getThumbnail()).into(holder.thumbnail);
+
+        holder.overflow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showPopupMenu(holder.overflow);
+            }
+        });
+
+        holder.thumbnail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mRecipeCardClickHandler.onClick("TEST2");
+            }
+        });
+    }
+
+    /**
+     * Showing popup menu when tapping on 3 dots
+     */
+    private void showPopupMenu(View view) {
+        // inflate menu
+        PopupMenu popup = new PopupMenu(mContext, view);
+        MenuInflater inflater = popup.getMenuInflater();
+        inflater.inflate(R.menu.menu_recipe, popup.getMenu());
+        popup.setOnMenuItemClickListener(new menuRecipeItemClickListener());
+        popup.show();
     }
 
     @Override
     public int getItemCount() {
-        if (null == mRecipesData) return 0;
-        return mRecipesData.length;
+        return recipeList.size();
     }
 
-    static class RecipeViewHolder extends RecyclerView.ViewHolder implements OnClickListener{
+    public class recipeAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        public TextView title, count;
+        public ImageView thumbnail, overflow;
 
-        public static TextView mRecipeTextView;
-
-        public RecipeViewHolder(View view) {
+        public recipeAdapterViewHolder(View view) {
             super(view);
-            mRecipeTextView = view.findViewById(R.id.tv_recipes_data);
+            title = view.findViewById(R.id.title);
+            count = view.findViewById(R.id.count);
+            thumbnail = view.findViewById(R.id.thumbnail);
+            overflow = view.findViewById(R.id.overflow);
             view.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View v) {
-            int adapterPosition = getAdapterPosition();
-            mClickHandler.onClick(mRecipesData[adapterPosition]);
+            mRecipeCardClickHandler.onClick("TEST");
         }
     }
 
-    public interface RecipeAdapterOnClickHandler {
+    /**
+     * Click listener for popup menu items
+     */
+    class menuRecipeItemClickListener implements PopupMenu.OnMenuItemClickListener {
+
+        public menuRecipeItemClickListener() {
+        }
+
+        @Override
+        public boolean onMenuItemClick(MenuItem menuItem) {
+            switch (menuItem.getItemId()) {
+                case R.id.action_add_favourite:
+                    Toast.makeText(mContext, "Add to favourite", Toast.LENGTH_SHORT).show();
+                    return true;
+                case R.id.action_play_next:
+                    Toast.makeText(mContext, "Share", Toast.LENGTH_SHORT).show();
+                    return true;
+                default:
+            }
+            return false;
+        }
+    }
+
+    public interface RecipesAdapterOnClickHandler {
         void onClick(String recipe);
     }
 }

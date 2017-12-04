@@ -22,7 +22,10 @@
             android:name=".LoginActivity"
             android:label="@string/title_activity_login" />
         <activity android:name=".SignupActivity" />
-        <activity android:name=".RecipesActivity"></activity>
+        <activity android:name=".RecipesActivity" />
+        <activity
+            android:name=".IngredientActivity"
+            android:label="@string/title_activity_ingredient"></activity>
     </application>
 
 </manifest>

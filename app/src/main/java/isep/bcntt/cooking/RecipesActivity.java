@@ -1,89 +1,144 @@
 package isep.bcntt.cooking;
 
 import android.content.Context;
+import android.content.res.Resources;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.os.AsyncTask;
+import android.util.TypedValue;
 import android.view.View;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import isep.bcntt.cooking.RecipesAdapter.RecipeAdapterOnClickHandler;
+import java.util.ArrayList;
+import java.util.List;
 
-public class RecipesActivity extends AppCompatActivity implements RecipeAdapterOnClickHandler{
+import isep.bcntt.cooking.model.RecipeCard;
 
-    private RecyclerView mRecipesList;
-    private RecipesAdapter mRecipesAdapter;
+public class RecipesActivity extends AppCompatActivity implements RecipesAdapter.RecipesAdapterOnClickHandler {
 
-    private TextView mErrorMessageDisplay;
-    private ProgressBar mLoadingIndicator;
+    private RecyclerView recyclerView;
+    private RecipesAdapter adapter;
+    private List<RecipeCard> recipeList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipes);
+        recyclerView = findViewById(R.id.rv_recipe);
 
-        mRecipesList = findViewById(R.id.rv_recipes);
-        mErrorMessageDisplay = findViewById(R.id.tv_error_message_display);
-        mLoadingIndicator = findViewById(R.id.pb_loading_indicator);
+        recipeList = new ArrayList<>();
+        adapter = new RecipesAdapter(this, recipeList, this);
 
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        mRecipesList.setLayoutManager(layoutManager);
-        mRecipesList.setHasFixedSize(true);
+        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 2);
+        recyclerView.setLayoutManager(mLayoutManager);
+        recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(10), true));
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setAdapter(adapter);
 
-        mRecipesAdapter = new RecipesAdapter(this);
-        mRecipesList.setAdapter(mRecipesAdapter);
+        preparerecipes();
+    }
 
-        loadRecipeData();
+    /**
+     * Adding few recipes for testing
+     */
+    private void preparerecipes() {
+        int[] covers = new int[]{
+                R.drawable.ic_dashboard_black_24dp,
+                R.drawable.ic_dashboard_black_24dp,
+                R.drawable.ic_dashboard_black_24dp,
+                R.drawable.ic_dashboard_black_24dp,
+                R.drawable.ic_dashboard_black_24dp,
+                R.drawable.ic_dashboard_black_24dp,
+                R.drawable.ic_dashboard_black_24dp,
+                R.drawable.ic_dashboard_black_24dp,
+                R.drawable.ic_dashboard_black_24dp,
+                R.drawable.ic_dashboard_black_24dp,
+                R.drawable.ic_dashboard_black_24dp,};
+
+        RecipeCard a = new RecipeCard("Recipe 1", 13, covers[0]);
+        recipeList.add(a);
+
+        a = new RecipeCard("Recipe 2", 8, covers[1]);
+        recipeList.add(a);
+
+        a = new RecipeCard("Recipe 3", 11, covers[2]);
+        recipeList.add(a);
+
+        a = new RecipeCard("Recipe 4", 12, covers[3]);
+        recipeList.add(a);
+
+        a = new RecipeCard("Recipe 5", 14, covers[4]);
+        recipeList.add(a);
+
+        a = new RecipeCard("Recipe 6", 1, covers[5]);
+        recipeList.add(a);
+
+        a = new RecipeCard("Recipe 7", 11, covers[6]);
+        recipeList.add(a);
+
+        a = new RecipeCard("Recipe 8", 14, covers[7]);
+        recipeList.add(a);
+
+        a = new RecipeCard("Recipe 9", 11, covers[8]);
+        recipeList.add(a);
+
+        a = new RecipeCard("Recipe 10", 17, covers[9]);
+        recipeList.add(a);
+
+        adapter.notifyDataSetChanged();
+    }
+
+    /**
+     * Converting dp to pixel
+     */
+    private int dpToPx(int dp) {
+        Resources r = getResources();
+        return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, r.getDisplayMetrics()));
     }
 
     @Override
-    public void onClick(String data) {
+    public void onClick(String recipe) {
         Context context = this;
-        Toast.makeText(context, data, Toast.LENGTH_SHORT).show();
+        Toast.makeText(context, recipe, Toast.LENGTH_SHORT).show();
     }
 
+    /**
+     * RecyclerView item decoration - give equal margin around grid item
+     */
+    public class GridSpacingItemDecoration extends RecyclerView.ItemDecoration {
 
-    private void loadRecipeData() {
-        showRecipeDataView();
-        new FetchRecipesTask().execute();
-    }
+        private int spanCount;
+        private int spacing;
+        private boolean includeEdge;
 
-    private void showRecipeDataView() {
-        mErrorMessageDisplay.setVisibility(View.INVISIBLE);
-        mRecipesList.setVisibility(View.VISIBLE);
-    }
-
-    private void showErrorMessage() {
-        mRecipesList.setVisibility(View.INVISIBLE);
-        mErrorMessageDisplay.setVisibility(View.VISIBLE);
-    }
-    
-    public class FetchRecipesTask extends AsyncTask<String, Void, String[]> {
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            mLoadingIndicator.setVisibility(View.VISIBLE);
+        public GridSpacingItemDecoration(int spanCount, int spacing, boolean includeEdge) {
+            this.spanCount = spanCount;
+            this.spacing = spacing;
+            this.includeEdge = includeEdge;
         }
 
         @Override
-        protected String[] doInBackground(String... params) {
+        public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+            int position = parent.getChildAdapterPosition(view); // item position
+            int column = position % spanCount; // item column
 
-            return new String[30];
-        }
+            if (includeEdge) {
+                outRect.left = spacing - column * spacing / spanCount; // spacing - column * ((1f / spanCount) * spacing)
+                outRect.right = (column + 1) * spacing / spanCount; // (column + 1) * ((1f / spanCount) * spacing)
 
-        @Override
-        protected void onPostExecute(String[] recipesData) {
-            mLoadingIndicator.setVisibility(View.INVISIBLE);
-            if (recipesData != null) {
-                showRecipeDataView();
-                mRecipesAdapter.setmRecipesData(recipesData);
+                if (position < spanCount) { // top edge
+                    outRect.top = spacing;
+                }
+                outRect.bottom = spacing; // item bottom
             } else {
-                showErrorMessage();
+                outRect.left = column * spacing / spanCount; // column * ((1f / spanCount) * spacing)
+                outRect.right = spacing - (column + 1) * spacing / spanCount; // spacing - (column + 1) * ((1f /    spanCount) * spacing)
+                if (position >= spanCount) {
+                    outRect.top = spacing; // item top
+                }
             }
         }
     }

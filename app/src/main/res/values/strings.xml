@@ -20,4 +20,6 @@
 
     <!--error-->
     <string name="error_message">An error has occurred. Try again</string>
+    <string name="action_add_favourite">Add to Favourites</string>
+    <string name="action_share">Share</string>
 </resources>
