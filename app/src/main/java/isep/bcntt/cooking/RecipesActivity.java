@@ -1,6 +1,7 @@
 package isep.bcntt.cooking;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Rect;
 import android.os.Bundle;
@@ -101,8 +102,8 @@ public class RecipesActivity extends AppCompatActivity implements RecipesAdapter
 
     @Override
     public void onClick(String recipe) {
-        Context context = this;
-        Toast.makeText(context, recipe, Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(getApplicationContext(), RecipeDetailsActivity.class);
+        startActivity(intent);
     }
 
     /**
@@ -110,9 +111,9 @@ public class RecipesActivity extends AppCompatActivity implements RecipesAdapter
      */
     public class GridSpacingItemDecoration extends RecyclerView.ItemDecoration {
 
-        private int spanCount;
-        private int spacing;
-        private boolean includeEdge;
+        private final int spanCount;
+        private final int spacing;
+        private final boolean includeEdge;
 
         public GridSpacingItemDecoration(int spanCount, int spacing, boolean includeEdge) {
             this.spanCount = spanCount;
