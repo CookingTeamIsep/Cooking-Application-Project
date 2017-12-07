@@ -20,6 +20,12 @@
 
     <!--error-->
     <string name="error_message">An error has occurred. Try again</string>
+
+    <!--Recipe result menu-->
     <string name="action_add_favourite">Add to Favourites</string>
     <string name="action_share">Share</string>
+
+    <!--Navigation drawer-->
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
 </resources>

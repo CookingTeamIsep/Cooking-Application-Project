@@ -1,6 +1,5 @@
 package isep.bcntt.cooking;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Rect;
@@ -11,7 +10,6 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.TypedValue;
 import android.view.View;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,24 +18,24 @@ import isep.bcntt.cooking.model.RecipeCard;
 
 public class RecipesActivity extends AppCompatActivity implements RecipesAdapter.RecipesAdapterOnClickHandler {
 
-    private RecyclerView recyclerView;
-    private RecipesAdapter adapter;
-    private List<RecipeCard> recipeList;
+    private RecyclerView mRecyclerView;
+    private RecipesAdapter mRecipesAdapter;
+    private List<RecipeCard> mRecipeList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipes);
-        recyclerView = findViewById(R.id.rv_recipe);
+        mRecyclerView = findViewById(R.id.rv_recipe);
 
-        recipeList = new ArrayList<>();
-        adapter = new RecipesAdapter(this, recipeList, this);
+        mRecipeList = new ArrayList<>();
+        mRecipesAdapter = new RecipesAdapter(this, mRecipeList, this);
 
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 2);
-        recyclerView.setLayoutManager(mLayoutManager);
-        recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(10), true));
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(adapter);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        mRecyclerView.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(10), true));
+        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        mRecyclerView.setAdapter(mRecipesAdapter);
 
         preparerecipes();
     }
@@ -60,36 +58,36 @@ public class RecipesActivity extends AppCompatActivity implements RecipesAdapter
                 R.drawable.ic_dashboard_black_24dp,};
 
         RecipeCard a = new RecipeCard("Recipe 1", 13, covers[0]);
-        recipeList.add(a);
+        mRecipeList.add(a);
 
         a = new RecipeCard("Recipe 2", 8, covers[1]);
-        recipeList.add(a);
+        mRecipeList.add(a);
 
         a = new RecipeCard("Recipe 3", 11, covers[2]);
-        recipeList.add(a);
+        mRecipeList.add(a);
 
         a = new RecipeCard("Recipe 4", 12, covers[3]);
-        recipeList.add(a);
+        mRecipeList.add(a);
 
         a = new RecipeCard("Recipe 5", 14, covers[4]);
-        recipeList.add(a);
+        mRecipeList.add(a);
 
         a = new RecipeCard("Recipe 6", 1, covers[5]);
-        recipeList.add(a);
+        mRecipeList.add(a);
 
         a = new RecipeCard("Recipe 7", 11, covers[6]);
-        recipeList.add(a);
+        mRecipeList.add(a);
 
         a = new RecipeCard("Recipe 8", 14, covers[7]);
-        recipeList.add(a);
+        mRecipeList.add(a);
 
         a = new RecipeCard("Recipe 9", 11, covers[8]);
-        recipeList.add(a);
+        mRecipeList.add(a);
 
         a = new RecipeCard("Recipe 10", 17, covers[9]);
-        recipeList.add(a);
+        mRecipeList.add(a);
 
-        adapter.notifyDataSetChanged();
+        mRecipesAdapter.notifyDataSetChanged();
     }
 
     /**
@@ -101,7 +99,7 @@ public class RecipesActivity extends AppCompatActivity implements RecipesAdapter
     }
 
     @Override
-    public void onClick(String recipe) {
+    public void onClick() {
         Intent intent = new Intent(getApplicationContext(), RecipeDetailsActivity.class);
         startActivity(intent);
     }

@@ -57,7 +57,7 @@ public class RecipesAdapter extends RecyclerView.Adapter<RecipesAdapter.recipeAd
         holder.thumbnail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mRecipeCardClickHandler.onClick("TEST2");
+                mRecipeCardClickHandler.onClick();
             }
         });
     }
@@ -94,7 +94,7 @@ public class RecipesAdapter extends RecyclerView.Adapter<RecipesAdapter.recipeAd
 
         @Override
         public void onClick(View v) {
-            mRecipeCardClickHandler.onClick("TEST");
+            mRecipeCardClickHandler.onClick();
         }
     }
 
@@ -122,6 +122,6 @@ public class RecipesAdapter extends RecyclerView.Adapter<RecipesAdapter.recipeAd
     }
 
     public interface RecipesAdapterOnClickHandler {
-        void onClick(String recipe);
+        void onClick();
     }
 }

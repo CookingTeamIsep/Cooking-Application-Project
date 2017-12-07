@@ -1,61 +1,75 @@
 package isep.bcntt.cooking;
 
 import android.content.Intent;
-import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.EditText;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 
+import isep.bcntt.cooking.ingredient.IngredientFragment;
 
-import isep.bcntt.cooking.utilities.NetworkUtils;
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-import java.io.IOException;
-import java.net.URL;
+    private BottomNavigationView.OnNavigationItemSelectedListener mainnNavigationItemSelectedListener
+            = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
-public class MainActivity extends AppCompatActivity {
-    private Button b;
-    private Button br;
-
-    private EditText mSearchBoxEditText;
-    private TextView mSearchResultsTextView;
-    private TextView mErrorMessageDisplay;
-    private ProgressBar mLoadingIndicator;
+        @Override
+        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            switch (item.getItemId()) {
+                case R.id.navigation_test:
+                    showFragment(new TestFragment());
+                    return true;
+                case R.id.navigation_mon_frigo:
+                    showFragment(new IngredientFragment());
+                    return true;
+                case R.id.navigation_rechercher:
+                    Intent intent = new Intent(getApplicationContext(), RecipesActivity.class);
+                    startActivity(intent);
+                    return true;
+            }
+            return false;
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mLoadingIndicator = findViewById(R.id.pb_loading_indicator);
-        mErrorMessageDisplay = findViewById(R.id.tv_error_message_display);
-        mSearchBoxEditText = findViewById(R.id.et_search_box);
-        mSearchResultsTextView = findViewById(R.id.tv_search_results_json);
+        BottomNavigationView navigation = findViewById(R.id.navigation_ingredient_category);
+        navigation.setOnNavigationItemSelectedListener(mainnNavigationItemSelectedListener);
+        navigation.setSelectedItemId(R.id.navigation_mon_frigo);
 
-        b = findViewById(R.id.button);
-        br = findViewById(R.id.button_recipes);
-        b.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Start the Signup activity
-                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-                startActivity(intent);
-            }
-        });
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
-        br.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Start the Signup activity
-                Intent intent = new Intent(getApplicationContext(), RecipesActivity.class);
-                startActivity(intent);
-            }
-        });
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+    }
+
+    @Override
+    public void onBackPressed() {
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
     }
 
     @Override
@@ -68,57 +82,41 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int itemThatWasClickedId = item.getItemId();
         if (itemThatWasClickedId == R.id.action_search) {
-            makeGithubSearchQuery();
+            Intent intent = new Intent(getApplicationContext(), RecipesActivity.class);
+            startActivity(intent);
             return true;
         }
+
         return super.onOptionsItemSelected(item);
     }
 
-    private void makeGithubSearchQuery() {
-        String githubQuery = mSearchBoxEditText.getText().toString();
-        URL githubSearchUrl = NetworkUtils.buildUrl(githubQuery);
-        new GithubQueryTask().execute(githubSearchUrl);
-    }
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        int id = item.getItemId();
 
-    private void showErrorMessage() {
-        mSearchResultsTextView.setVisibility(View.INVISIBLE);
-        mErrorMessageDisplay.setVisibility(View.VISIBLE);
-    }
+        if (id == R.id.nav_favorites) {
 
-    private void showWeatherDataView() {
-        mErrorMessageDisplay.setVisibility(View.INVISIBLE);
-        mSearchResultsTextView.setVisibility(View.VISIBLE);
-    }
+        } else if (id == R.id.nav_my_account) {
 
-    public class GithubQueryTask extends AsyncTask<URL, Void, String> {
+        } else if (id == R.id.nav_settings) {
 
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            mLoadingIndicator.setVisibility(View.VISIBLE);
+        } else if (id == R.id.nav_feedback) {
+
+        } else if (id == R.id.nav_about_cooking) {
+
+        } else if (id == R.id.nav_about_dev_team) {
+
         }
 
-        @Override
-        protected String doInBackground(URL... params) {
-            URL searchUrl = params[0];
-            String githubSearchResults = null;
-            try {
-                githubSearchResults = NetworkUtils.getResponseFromHttpUrl(searchUrl);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return githubSearchResults;
-        }
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
+    }
 
-        @Override
-        protected void onPostExecute(String githubSearchResults) {
-            mLoadingIndicator.setVisibility(View.INVISIBLE);
-            if (githubSearchResults != null && !githubSearchResults.equals("")) {
-                showWeatherDataView();
-                mSearchResultsTextView.setText(githubSearchResults);
-            } else {
-                
-            }
-        }
+    private void showFragment(Fragment fragment) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction()
+                .replace(R.id.fl_content_page_indregient, fragment)
+                .commit();
     }
 }
