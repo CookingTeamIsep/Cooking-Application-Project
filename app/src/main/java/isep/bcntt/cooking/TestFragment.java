@@ -43,29 +43,11 @@ public class TestFragment extends Fragment {
         mSearchResultsTextView = rootView.findViewById(R.id.tv_search_results_json);
 
         Button b = rootView.findViewById(R.id.button);
-        Button br = rootView.findViewById(R.id.button_recipes);
-        Button ingredient = rootView.findViewById(R.id.button_ingredient);
 
         b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), LoginActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        br.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getContext(), RecipesActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        ingredient.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getContext(), IngredientActivity.class);
                 startActivity(intent);
             }
         });

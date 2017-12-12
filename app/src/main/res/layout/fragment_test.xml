@@ -25,29 +25,6 @@
         tools:layout_editor_absoluteX="148dp"
         tools:layout_editor_absoluteY="160dp" />
 
-    <Button
-        android:id="@+id/button_recipes"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Recipes recycleview"
-        tools:layout_editor_absoluteX="148dp"
-        tools:layout_editor_absoluteY="160dp" />
-
-    <Button
-        android:id="@+id/button_ingredient"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="ingredient"
-        tools:layout_editor_absoluteX="148dp"
-        tools:layout_editor_absoluteY="160dp" />
-
-    <Button
-        android:id="@+id/b_nav_drawer"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="test navigation drawer"
-        tools:layout_editor_absoluteX="148dp"
-        tools:layout_editor_absoluteY="160dp" />
 
     <EditText
         android:id="@+id/et_search_box"

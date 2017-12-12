@@ -53,7 +53,7 @@
                 android:layout_below="@id/thumbnail"
                 android:layout_marginTop="@dimen/ic_recipe_overflow_margin_top"
                 android:scaleType="centerCrop"
-                android:src="@drawable/ic_action_name" />
+                card_view:srcCompat="@drawable/ic_base_menu_button" />
 
         </RelativeLayout>
 

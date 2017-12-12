@@ -45,17 +45,18 @@ public class RecipesActivity extends AppCompatActivity implements RecipesAdapter
      */
     private void preparerecipes() {
         int[] covers = new int[]{
-                R.drawable.ic_dashboard_black_24dp,
-                R.drawable.ic_dashboard_black_24dp,
-                R.drawable.ic_dashboard_black_24dp,
-                R.drawable.ic_dashboard_black_24dp,
-                R.drawable.ic_dashboard_black_24dp,
-                R.drawable.ic_dashboard_black_24dp,
-                R.drawable.ic_dashboard_black_24dp,
-                R.drawable.ic_dashboard_black_24dp,
-                R.drawable.ic_dashboard_black_24dp,
-                R.drawable.ic_dashboard_black_24dp,
-                R.drawable.ic_dashboard_black_24dp,};
+                R.drawable.ic_base_dish,
+                R.drawable.ic_base_dish,
+                R.drawable.ic_base_dish,
+                R.drawable.ic_base_dish,
+                R.drawable.ic_base_dish,
+                R.drawable.ic_base_dish,
+                R.drawable.ic_base_dish,
+                R.drawable.ic_base_dish,
+                R.drawable.ic_base_dish,
+                R.drawable.ic_base_dish,
+                R.drawable.ic_base_dish
+        };
 
         RecipeCard a = new RecipeCard("Recipe 1", 13, covers[0]);
         mRecipeList.add(a);

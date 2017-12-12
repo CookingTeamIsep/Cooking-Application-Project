@@ -3,16 +3,16 @@
 
     <item
         android:id="@+id/navigation_test"
-        android:icon="@drawable/ic_dashboard_black_24dp"
+        android:icon="@drawable/ic_nav_recipe"
         android:title="Mes recettes" />
 
     <item
         android:id="@+id/navigation_mon_frigo"
-        android:icon="@drawable/ic_dashboard_black_24dp"
+        android:icon="@drawable/ic_nav_mon_frigo"
         android:title="Mon frigo" />
 
     <item
         android:id="@+id/navigation_rechercher"
-        android:icon="@drawable/ic_dashboard_black_24dp"
+        android:icon="@drawable/ic_nav_search_24dp"
         android:title="Recherche" />
 </menu>

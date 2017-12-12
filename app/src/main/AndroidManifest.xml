@@ -16,7 +16,6 @@
             android:label="@string/title_activity_login" />
         <activity android:name=".SignupActivity" />
         <activity android:name=".RecipesActivity" />
-        <activity android:name=".IngredientActivity" />
         <activity
             android:name=".RecipeDetailsActivity"
             android:theme="@style/AppTheme.NoActionBar" />

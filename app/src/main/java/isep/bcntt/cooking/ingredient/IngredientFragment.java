@@ -57,17 +57,18 @@ public class IngredientFragment extends Fragment implements IngredientAdapter.In
      */
     private void prepareIngredients() {
         int[] covers = new int[]{
-                R.drawable.ic_dashboard_black_24dp,
-                R.drawable.ic_dashboard_black_24dp,
-                R.drawable.ic_dashboard_black_24dp,
-                R.drawable.ic_dashboard_black_24dp,
-                R.drawable.ic_dashboard_black_24dp,
-                R.drawable.ic_dashboard_black_24dp,
-                R.drawable.ic_dashboard_black_24dp,
-                R.drawable.ic_dashboard_black_24dp,
-                R.drawable.ic_dashboard_black_24dp,
-                R.drawable.ic_dashboard_black_24dp,
-                R.drawable.ic_dashboard_black_24dp,};
+                R.drawable.ic_base_ingredient,
+                R.drawable.ic_base_ingredient,
+                R.drawable.ic_base_ingredient,
+                R.drawable.ic_base_ingredient,
+                R.drawable.ic_base_ingredient,
+                R.drawable.ic_base_ingredient,
+                R.drawable.ic_base_ingredient,
+                R.drawable.ic_base_ingredient,
+                R.drawable.ic_base_ingredient,
+                R.drawable.ic_base_ingredient,
+                R.drawable.ic_base_ingredient
+        };
 
         IngredientCard a = new IngredientCard("Ingredient 1", false, covers[0]);
         mIngredientList.add(a);
