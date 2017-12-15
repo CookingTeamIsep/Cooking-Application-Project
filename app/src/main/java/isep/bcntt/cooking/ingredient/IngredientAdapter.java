@@ -15,7 +15,7 @@ import com.bumptech.glide.Glide;
 import java.util.List;
 
 import isep.bcntt.cooking.R;
-import isep.bcntt.cooking.model.IngredientCard;
+import isep.bcntt.cooking.model.Ingredient;
 
 /**
  * {@link IngredientAdapter} exposes a list of ingredients to a
@@ -25,12 +25,12 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
 
     private final IngredientAdapterOnClickHandler mIngredientClickHandler;
     private Context mContext;
-    private List<IngredientCard> mIngredientList;
+    private List<Ingredient> mIngredientList;
 
     /**
      * Creates a IngredientAdapter.
      */
-    public IngredientAdapter(Context mContext, List<IngredientCard> ingredientList, IngredientAdapterOnClickHandler clickHandler) {
+    public IngredientAdapter(Context mContext, List<Ingredient> ingredientList, IngredientAdapterOnClickHandler clickHandler) {
         this.mContext = mContext;
         this.mIngredientList = ingredientList;
         mIngredientClickHandler = clickHandler;
@@ -65,7 +65,7 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
      */
     @Override
     public void onBindViewHolder(final IngredientAdapterViewHolder holder, int position) {
-        IngredientCard ingredient = mIngredientList.get(position);
+        Ingredient ingredient = mIngredientList.get(position);
         holder.name.setText(ingredient.getName());
         holder.checkBox.setChecked(ingredient.isSelected());
         Glide.with(mContext).load(ingredient.getThumbnail()).into(holder.thumbnail);
@@ -112,7 +112,7 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
         @Override
         public void onClick(View v) {
             int adapterPosition = getAdapterPosition();
-            IngredientCard ingredient = mIngredientList.get(adapterPosition);
+            /*Ingredient ingredient = mIngredientList.get(adapterPosition);*/
             mIngredientClickHandler.onClick();
         }
     }

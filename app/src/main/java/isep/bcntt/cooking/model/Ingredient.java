@@ -1,25 +1,34 @@
 package isep.bcntt.cooking.model;
 
-public class IngredientCard {
-    private String mName;
+public class Ingredient {
+    private String id;
+    private String name;
     private boolean isSelected;
     private int thumbnail;
 
-    public IngredientCard() {
+    public Ingredient() {
     }
 
-    public IngredientCard(String name, boolean selected, int thumbnail) {
-        this.mName = name;
+    public Ingredient(String id, String name, boolean selected, int thumbnail) {
+        this.id = id;
+        this.name = name;
         this.isSelected = selected;
         this.thumbnail = thumbnail;
     }
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getName() {
-        return mName;
+        return name;
     }
 
     public void setName(String name) {
-        this.mName = name;
+        this.name = name;
     }
 
     public boolean isSelected() {
