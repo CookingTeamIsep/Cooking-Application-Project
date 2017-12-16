@@ -80,9 +80,6 @@ public class IngredientFragment extends Fragment implements IngredientAdapter.In
                 if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
                 mIngredientList = gistJsonAdapter.fromJson(response.body().source());
 
-                for (Ingredient ingredient : mIngredientList) {
-                    ingredient.setThumbnail(R.drawable.ic_base_ingredient);
-                }
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -99,47 +96,3 @@ public class IngredientFragment extends Fragment implements IngredientAdapter.In
 
     }
 }
-
- /*       int[] covers = new int[]{
-                R.drawable.ic_base_ingredient,
-                R.drawable.ic_base_ingredient,
-                R.drawable.ic_base_ingredient,
-                R.drawable.ic_base_ingredient,
-                R.drawable.ic_base_ingredient,
-                R.drawable.ic_base_ingredient,
-                R.drawable.ic_base_ingredient,
-                R.drawable.ic_base_ingredient,
-                R.drawable.ic_base_ingredient,
-                R.drawable.ic_base_ingredient,
-                R.drawable.ic_base_ingredient
-        };
-
-        Ingredient a = new Ingredient("1", "Ingredient 1", false, covers[0]);
-        mIngredientList.add(a);
-
-        a = new Ingredient("2", "Ingredient 2", true, covers[1]);
-        mIngredientList.add(a);
-
-        a = new Ingredient("3", "Ingredient 3", false, covers[2]);
-        mIngredientList.add(a);
-
-        a = new Ingredient("4", "Ingredient 4", false, covers[3]);
-        mIngredientList.add(a);
-
-        a = new Ingredient("5", "Ingredient 5", false, covers[4]);
-        mIngredientList.add(a);
-
-        a = new Ingredient("6", "Ingredient 6", false, covers[5]);
-        mIngredientList.add(a);
-
-        a = new Ingredient("7", "Ingredient 7", true, covers[6]);
-        mIngredientList.add(a);
-
-        a = new Ingredient("8", "Ingredient 8", true, covers[7]);
-        mIngredientList.add(a);
-
-        a = new Ingredient("9", "Ingredient 9", false, covers[8]);
-        mIngredientList.add(a);
-
-        a = new Ingredient("10", "Ingredient 10", false, covers[9]);
-        mIngredientList.add(a);*/

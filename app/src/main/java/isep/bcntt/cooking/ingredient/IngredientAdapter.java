@@ -68,7 +68,7 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
         Ingredient ingredient = mIngredientList.get(position);
         holder.name.setText(ingredient.getName());
         holder.checkBox.setChecked(ingredient.isSelected());
-        Glide.with(mContext).load(ingredient.getThumbnail()).into(holder.thumbnail);
+        Glide.with(mContext).load("http://localhost:8080/picture/"+ingredient.getName().replace(" ","_")).into(holder.thumbnail);
 
         holder.thumbnail.setOnClickListener(new View.OnClickListener() {
             @Override

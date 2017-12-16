@@ -4,16 +4,14 @@ public class Ingredient {
     private String id;
     private String name;
     private boolean isSelected;
-    private int thumbnail;
 
     public Ingredient() {
     }
 
-    public Ingredient(String id, String name, boolean selected, int thumbnail) {
+    public Ingredient(String id, String name, boolean selected) {
         this.id = id;
         this.name = name;
         this.isSelected = selected;
-        this.thumbnail = thumbnail;
     }
     public String getId() {
         return id;
@@ -37,13 +35,5 @@ public class Ingredient {
 
     public void setSelected(boolean selected) {
         this.isSelected = selected;
-    }
-
-    public int getThumbnail() {
-        return thumbnail;
-    }
-
-    public void setThumbnail(int thumbnail) {
-        this.thumbnail = thumbnail;
     }
 }
