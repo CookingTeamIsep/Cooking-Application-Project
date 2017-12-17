@@ -30,11 +30,11 @@ import okhttp3.Response;
 
 public class IngredientFragment extends Fragment implements IngredientAdapter.IngredientAdapterOnClickHandler {
 
-    protected RecyclerView.LayoutManager mLayoutManager;
     private final OkHttpClient client = new OkHttpClient();
     private final Moshi moshi = new Moshi.Builder().build();
     private final Type type = Types.newParameterizedType(List.class, Ingredient.class);
     private final JsonAdapter<List<Ingredient>> gistJsonAdapter = moshi.adapter(type);
+    protected RecyclerView.LayoutManager mLayoutManager;
     private RecyclerView mRecyclerView;
     private IngredientAdapter mIngredientAdapter;
     private List<Ingredient> mIngredientList;
@@ -46,7 +46,6 @@ public class IngredientFragment extends Fragment implements IngredientAdapter.In
 
         mIngredientList = new ArrayList<>();
         mRecyclerView = rootView.findViewById(R.id.rv_ingredient);
-
 
         prepareIngredients();
         return rootView;

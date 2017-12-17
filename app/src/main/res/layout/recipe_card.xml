@@ -36,14 +36,14 @@
                 android:textSize="@dimen/recipe_title" />
 
             <TextView
-                android:id="@+id/count"
+                android:id="@+id/tv_info"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/title"
-                android:paddingBottom="@dimen/songs_count_padding_bottom"
+                android:paddingBottom="@dimen/recipe_info_padding_bottom"
                 android:paddingLeft="@dimen/recipe_title_padding"
                 android:paddingRight="@dimen/recipe_title_padding"
-                android:textSize="@dimen/songs_count" />
+                android:textSize="@dimen/recipe_detail_sub" />
 
             <ImageView
                 android:id="@+id/overflow"

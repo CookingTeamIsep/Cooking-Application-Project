@@ -1,7 +1,7 @@
 package isep.bcntt.cooking;
 
 import android.content.Context;
-import android.support.v7.widget.PopupMenu;
+import android.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
@@ -16,15 +16,15 @@ import com.bumptech.glide.Glide;
 
 import java.util.List;
 
-import isep.bcntt.cooking.model.RecipeCard;
+import isep.bcntt.cooking.model.Recipe;
 
 public class RecipesAdapter extends RecyclerView.Adapter<RecipesAdapter.recipeAdapterViewHolder> {
 
     private Context mContext;
-    private List<RecipeCard> recipeList;
+    private List<Recipe> recipeList;
     private static RecipesAdapterOnClickHandler mRecipeCardClickHandler;
 
-    public RecipesAdapter(Context mContext, List<RecipeCard> recipeList, RecipesAdapterOnClickHandler clickHandler) {
+    public RecipesAdapter(Context mContext, List<Recipe> recipeList, RecipesAdapterOnClickHandler clickHandler) {
         this.mContext = mContext;
         this.recipeList = recipeList;
         mRecipeCardClickHandler = clickHandler;
@@ -40,13 +40,12 @@ public class RecipesAdapter extends RecyclerView.Adapter<RecipesAdapter.recipeAd
 
     @Override
     public void onBindViewHolder(final recipeAdapterViewHolder holder, int position) {
-        RecipeCard recipe = recipeList.get(position);
+        Recipe recipe = recipeList.get(position);
         holder.title.setText(recipe.getName());
-        holder.count.setText(recipe.getNumbreOfRatings() + " ratings");
+        holder.info.setText("Difficulty: " + recipe.getDifficulty() + "  Dish size: " + recipe.getDishesSize());
 
         // loading recipe cover using Glide library
-        Glide.with(mContext).load(recipe.getThumbnail()).into(holder.thumbnail);
-
+        Glide.with(mContext).load("http://localhost:8080/picture/"+recipe.getName().replace(" ","_")).into(holder.thumbnail);
         holder.overflow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -80,13 +79,13 @@ public class RecipesAdapter extends RecyclerView.Adapter<RecipesAdapter.recipeAd
     }
 
     public class recipeAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        public TextView title, count;
+        public TextView title, info;
         public ImageView thumbnail, overflow;
 
         public recipeAdapterViewHolder(View view) {
             super(view);
             title = view.findViewById(R.id.title);
-            count = view.findViewById(R.id.count);
+            info = view.findViewById(R.id.tv_info);
             thumbnail = view.findViewById(R.id.thumbnail);
             overflow = view.findViewById(R.id.overflow);
             view.setOnClickListener(this);

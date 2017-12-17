@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
@@ -11,16 +12,33 @@ import android.support.v7.widget.RecyclerView;
 import android.util.TypedValue;
 import android.view.View;
 
+import com.squareup.moshi.JsonAdapter;
+import com.squareup.moshi.Moshi;
+import com.squareup.moshi.Types;
+
+import java.io.IOException;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-import isep.bcntt.cooking.model.RecipeCard;
+import isep.bcntt.cooking.model.Recipe;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 public class RecipesActivity extends AppCompatActivity implements RecipesAdapter.RecipesAdapterOnClickHandler {
 
+
+    private final OkHttpClient client = new OkHttpClient();
+    private final Moshi moshi = new Moshi.Builder().build();
+    private final Type type = Types.newParameterizedType(List.class, Recipe.class);
+    private final JsonAdapter<List<Recipe>> gistJsonAdapter = moshi.adapter(type);
+
     private RecyclerView mRecyclerView;
     private RecipesAdapter mRecipesAdapter;
-    private List<RecipeCard> mRecipeList;
+    private List<Recipe> mRecipeList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,13 +47,6 @@ public class RecipesActivity extends AppCompatActivity implements RecipesAdapter
         mRecyclerView = findViewById(R.id.rv_recipe);
 
         mRecipeList = new ArrayList<>();
-        mRecipesAdapter = new RecipesAdapter(this, mRecipeList, this);
-
-        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 2);
-        mRecyclerView.setLayoutManager(mLayoutManager);
-        mRecyclerView.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(10), true));
-        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        mRecyclerView.setAdapter(mRecipesAdapter);
 
         preparerecipes();
     }
@@ -44,51 +55,37 @@ public class RecipesActivity extends AppCompatActivity implements RecipesAdapter
      * Adding few recipes for testing
      */
     private void preparerecipes() {
-        int[] covers = new int[]{
-                R.drawable.ic_base_dish,
-                R.drawable.ic_base_dish,
-                R.drawable.ic_base_dish,
-                R.drawable.ic_base_dish,
-                R.drawable.ic_base_dish,
-                R.drawable.ic_base_dish,
-                R.drawable.ic_base_dish,
-                R.drawable.ic_base_dish,
-                R.drawable.ic_base_dish,
-                R.drawable.ic_base_dish,
-                R.drawable.ic_base_dish
-        };
+        Request request = new Request.Builder()
+                .url("http://localhost:8080/recipe/get")
+                .build();
 
-        RecipeCard a = new RecipeCard("Recipe 1", 13, covers[0]);
-        mRecipeList.add(a);
+        client.newCall(request).enqueue(new Callback() {
 
-        a = new RecipeCard("Recipe 2", 8, covers[1]);
-        mRecipeList.add(a);
+            @Override
+            public void onFailure(@NonNull Call call, @NonNull IOException e) {
+                e.printStackTrace();
+            }
 
-        a = new RecipeCard("Recipe 3", 11, covers[2]);
-        mRecipeList.add(a);
+            @Override
+            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
 
-        a = new RecipeCard("Recipe 4", 12, covers[3]);
-        mRecipeList.add(a);
+                if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
+                mRecipeList = gistJsonAdapter.fromJson(response.body().source());
 
-        a = new RecipeCard("Recipe 5", 14, covers[4]);
-        mRecipeList.add(a);
-
-        a = new RecipeCard("Recipe 6", 1, covers[5]);
-        mRecipeList.add(a);
-
-        a = new RecipeCard("Recipe 7", 11, covers[6]);
-        mRecipeList.add(a);
-
-        a = new RecipeCard("Recipe 8", 14, covers[7]);
-        mRecipeList.add(a);
-
-        a = new RecipeCard("Recipe 9", 11, covers[8]);
-        mRecipeList.add(a);
-
-        a = new RecipeCard("Recipe 10", 17, covers[9]);
-        mRecipeList.add(a);
-
-        mRecipesAdapter.notifyDataSetChanged();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        mRecipesAdapter = new RecipesAdapter(getApplicationContext(), mRecipeList, RecipesActivity.this);
+                        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getApplicationContext(), 2);
+                        mRecyclerView.setLayoutManager(mLayoutManager);
+                        mRecyclerView.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(10), true));
+                        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+                        mRecyclerView.setAdapter(mRecipesAdapter);
+                        mRecipesAdapter.notifyDataSetChanged();
+                    }
+                });
+            }
+        });
     }
 
     /**
