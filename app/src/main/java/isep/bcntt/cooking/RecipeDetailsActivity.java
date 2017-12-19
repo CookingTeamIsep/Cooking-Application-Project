@@ -18,12 +18,19 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import isep.bcntt.cooking.ingredient.IngredientFragment;
+import isep.bcntt.cooking.model.Ingredient;
 import isep.bcntt.cooking.model.Recipe;
-import isep.bcntt.cooking.utilities.DownloadImageTask;
+import isep.bcntt.cooking.model.Tool;
 
 public class RecipeDetailsActivity extends AppCompatActivity {
 
     private Recipe recipe;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,7 +42,7 @@ public class RecipeDetailsActivity extends AppCompatActivity {
         mTitleRecipe.setText(recipe.getName());
 
         ImageView mRecipeMainLogo = findViewById(R.id.backdrop);
-        Glide.with(this).load("http://localhost:8080/picture/"+recipe.getName().replace(" ","_")).into(mRecipeMainLogo);
+        Glide.with(this).load("http://localhost:8080/picture/" + recipe.getName().replace(" ", "_")).into(mRecipeMainLogo);
 
         AppBarLayout appBarLayout = findViewById(R.id.appbar);
         appBarLayout.setExpanded(true);
@@ -108,16 +115,32 @@ public class RecipeDetailsActivity extends AppCompatActivity {
             if (position == 0) {
                 return PlaceholderFragment.newInstance(
                         recipe.getName() + "\n\n" +
-                        "kcal: " + recipe.getKcal() + "\n\n" +
-                        "prot :" + recipe.getProt() + "\n\n" +
-                        "calc:" + recipe.getCalc() + "\n\n\n\n" +
-                        "Diffulty : " + recipe.getDifficulty()  + "/5\n\n" +
-                        " Dishes size: " + recipe.getDishesSize() + "/5");
-            } else if (position == 1 ){
-                return PlaceholderFragment.newInstance(1);
-            } else if (position == 2 ){
-                return PlaceholderFragment.newInstance(recipe.getDescription());
-            } else if (position == 3 ){
+                                "kcal: " + recipe.getKcal() + "\n\n" +
+                                "prot :" + recipe.getProt() + "\n\n" +
+                                "calc:" + recipe.getCalc() + "\n\n\n\n" +
+                                "Diffulty : " + recipe.getDifficulty() + "/5\n\n" +
+                                " Dishes size: " + recipe.getDishesSize() + "/5");
+            } else if (position == 1) {
+                List<String> ingredientsInRecipe = new ArrayList<>();
+                String ing = "Ingredients: \n\n";
+                for (Ingredient i : IngredientFragment.mIngredientList) {
+                    if (Arrays.asList(recipe.getIngredientsId()).contains(i.getId())) {
+                        ingredientsInRecipe.add(i.getName());
+                        ing = ing + i.getName() + "\n";
+                    }
+                }
+                return PlaceholderFragment.newInstance(ing);
+            } else if (position == 2) {
+                List<String> toolsInRecipe = new ArrayList<>();
+                String tools = "Tools: \n\n";
+                for (Tool t : IngredientFragment.mToolList) {
+                    if (Arrays.asList(recipe.getToolsId()).contains(t.getId())) {
+                        toolsInRecipe.add(t.getName());
+                        tools = tools + t.getName() + "\n";
+                    }
+                }
+                return PlaceholderFragment.newInstance(tools);
+            } else if (position == 3) {
                 return PlaceholderFragment.newInstance(recipe.getDescription());
             } else {
                 return PlaceholderFragment.newInstance(recipe.getName());

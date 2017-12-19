@@ -20,6 +20,7 @@ import java.util.List;
 
 import isep.bcntt.cooking.R;
 import isep.bcntt.cooking.model.Ingredient;
+import isep.bcntt.cooking.model.Tool;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.OkHttpClient;
@@ -29,14 +30,17 @@ import okhttp3.Response;
 
 public class IngredientFragment extends Fragment implements IngredientAdapter.IngredientAdapterOnClickHandler {
 
+    static public List<Ingredient> mIngredientList;
+    static public List<Tool> mToolList;
     private final OkHttpClient client = new OkHttpClient();
     private final Moshi moshi = new Moshi.Builder().build();
     private final Type type = Types.newParameterizedType(List.class, Ingredient.class);
     private final JsonAdapter<List<Ingredient>> gistJsonAdapter = moshi.adapter(type);
+    private final Type typeTool = Types.newParameterizedType(List.class, Tool.class);
+    private final JsonAdapter<List<Tool>> toolJsonAdapter = moshi.adapter(typeTool);
     protected RecyclerView.LayoutManager mLayoutManager;
     private RecyclerView mRecyclerView;
     private IngredientAdapter mIngredientAdapter;
-    private List<Ingredient> mIngredientList;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -47,6 +51,7 @@ public class IngredientFragment extends Fragment implements IngredientAdapter.In
         mRecyclerView = rootView.findViewById(R.id.rv_ingredient);
 
         prepareIngredients();
+        prepareTools();
         return rootView;
 
     }
@@ -99,6 +104,29 @@ public class IngredientFragment extends Fragment implements IngredientAdapter.In
                         mIngredientAdapter.notifyDataSetChanged();
                     }
                 });
+            }
+        });
+
+    }
+
+    private void prepareTools() {
+
+        Request request = new Request.Builder()
+                .url("http://localhost:8080/tool/get")
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
+
+            @Override
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+
+                if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
+                mToolList = toolJsonAdapter.fromJson(response.body().source());
             }
         });
 

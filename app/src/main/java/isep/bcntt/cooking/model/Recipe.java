@@ -8,10 +8,38 @@ public class Recipe implements Parcelable {
     private int kcal;
     private int prot;
     private int calc;
+    private int carbs;
     private String name;
     private int difficulty;
     private int dishesSize;
     private String description;
+    private String[] ingredientsId;
+
+    public int getCarbs() {
+        return carbs;
+    }
+
+    public void setCarbs(int carbs) {
+        this.carbs = carbs;
+    }
+
+    public String[] getIngredientsId() {
+        return ingredientsId;
+    }
+
+    public void setIngredientsId(String[] ingredientsId) {
+        this.ingredientsId = ingredientsId;
+    }
+
+    public String[] getToolsId() {
+        return toolsId;
+    }
+
+    public void setToolsId(String[] toolsId) {
+        this.toolsId = toolsId;
+    }
+
+    private String[] toolsId;
 
     public Recipe(String id, int kcal, int prot, int calc, String name, int difficulty, int dishesSize, String description) {
         this.id = id;
@@ -99,10 +127,13 @@ public class Recipe implements Parcelable {
         parcel.writeInt(kcal);
         parcel.writeInt(prot);
         parcel.writeInt(calc);
+        parcel.writeInt(carbs);
         parcel.writeString(name);
         parcel.writeInt(difficulty);
         parcel.writeInt(dishesSize);
         parcel.writeString(description);
+        parcel.writeStringArray(ingredientsId);
+        parcel.writeStringArray(toolsId);
     }
 
     public static final Parcelable.Creator<Recipe> CREATOR = new Parcelable.Creator<Recipe>() {
@@ -122,10 +153,13 @@ public class Recipe implements Parcelable {
         this.kcal = in.readInt();
         this.prot = in.readInt();
         this.calc = in.readInt();
+        this.carbs = in.readInt();
         this.name = in.readString();
         this.difficulty = in.readInt();
         this.dishesSize = in.readInt();
         this.description = in.readString();
+        this.ingredientsId = in.createStringArray();
+        this.toolsId = in.createStringArray();
     }
 
 
