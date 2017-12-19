@@ -97,9 +97,10 @@ public class RecipesActivity extends AppCompatActivity implements RecipesAdapter
     }
 
     @Override
-    public void onClick() {
-        Intent intent = new Intent(getApplicationContext(), RecipeDetailsActivity.class);
-        startActivity(intent);
+    public void onClick(Recipe recipe) {
+        Intent intentToStartDetailActivity = new Intent(this, RecipeDetailsActivity.class);
+        intentToStartDetailActivity.putExtra("recipe", recipe);
+        startActivity(intentToStartDetailActivity);
     }
 
     /**

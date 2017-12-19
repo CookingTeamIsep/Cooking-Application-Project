@@ -54,7 +54,7 @@
                         android:id="@+id/tv_subtitle_recipe_details"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="SUBTITLE"
+                        android:text="SCROLL UP IF YOU'RE HUNGRY"
                         android:textColor="@android:color/white"
                         android:textSize="18sp" />
 
@@ -85,13 +85,13 @@
                     android:id="@+id/tabItem3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Directions" />
+                    android:text="Tools" />
 
                 <android.support.design.widget.TabItem
                     android:id="@+id/tabItem4"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Comments" />
+                    android:text="Directions" />
 
             </android.support.design.widget.TabLayout>
         </android.support.design.widget.CollapsingToolbarLayout>

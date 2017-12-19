@@ -18,22 +18,29 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
+import isep.bcntt.cooking.model.Recipe;
 import isep.bcntt.cooking.utilities.DownloadImageTask;
 
 public class RecipeDetailsActivity extends AppCompatActivity {
 
+    private Recipe recipe;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_details);
 
+        recipe = getIntent().getExtras().getParcelable("recipe");
+
+        TextView mTitleRecipe = findViewById(R.id.tv_title_recipe_details);
+        mTitleRecipe.setText(recipe.getName());
+
+        ImageView mRecipeMainLogo = findViewById(R.id.backdrop);
+        Glide.with(this).load("http://localhost:8080/picture/"+recipe.getName().replace(" ","_")).into(mRecipeMainLogo);
+
         AppBarLayout appBarLayout = findViewById(R.id.appbar);
         appBarLayout.setExpanded(true);
 
-        ImageView mRecipeMainLogo = findViewById(R.id.backdrop);
-        new DownloadImageTask(mRecipeMainLogo).execute("http://scrat.hellocoton.fr/img/guide/buddha-bowl-pour-un-dejeuner-equilibre-19863756.jpg");
-        // Create the adapter that will return a fragment for each of the three
-        // primary sections of the activity.
+        // Create the adapter that will return a fragment for each of the three primary sections of the activity.
         SectionsPagerAdapter mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
         ViewPager mViewPager = findViewById(R.id.container_tab_recipe_details);
         mViewPager.setAdapter(mSectionsPagerAdapter);
@@ -72,12 +79,20 @@ public class RecipeDetailsActivity extends AppCompatActivity {
             return fragment;
         }
 
+        public static PlaceholderFragment newInstance(String s) {
+            PlaceholderFragment fragment = new PlaceholderFragment();
+            Bundle args = new Bundle();
+            args.putString(ARG_SECTION_NUMBER, s);
+            fragment.setArguments(args);
+            return fragment;
+        }
+
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_recipe_details, container, false);
             TextView textView = rootView.findViewById(R.id.tv_fragment_recipe_details_inner_text);
-            textView.setText(R.string.random_text_long);
+            textView.setText(getArguments().getString(ARG_SECTION_NUMBER));
             return rootView;
         }
     }
@@ -90,14 +105,28 @@ public class RecipeDetailsActivity extends AppCompatActivity {
 
         @Override
         public Fragment getItem(int position) {
-            // getItem is called to instantiate the fragment for the given page.
-            // Return a PlaceholderFragment (defined as a static inner class below).
-            return PlaceholderFragment.newInstance(position + 1);
+            if (position == 0) {
+                return PlaceholderFragment.newInstance(
+                        recipe.getName() + "\n\n" +
+                        "kcal: " + recipe.getKcal() + "\n\n" +
+                        "prot :" + recipe.getProt() + "\n\n" +
+                        "calc:" + recipe.getCalc() + "\n\n\n\n" +
+                        "Diffulty : " + recipe.getDifficulty()  + "/5\n\n" +
+                        " Dishes size: " + recipe.getDishesSize() + "/5");
+            } else if (position == 1 ){
+                return PlaceholderFragment.newInstance(1);
+            } else if (position == 2 ){
+                return PlaceholderFragment.newInstance(recipe.getDescription());
+            } else if (position == 3 ){
+                return PlaceholderFragment.newInstance(recipe.getDescription());
+            } else {
+                return PlaceholderFragment.newInstance(recipe.getName());
+            }
         }
 
         @Override
         public int getCount() {
-            return 4; // Show 4 total pages.
+            return 4;
         }
     }
 }

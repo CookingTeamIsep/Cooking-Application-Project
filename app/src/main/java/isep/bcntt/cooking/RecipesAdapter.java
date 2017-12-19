@@ -1,6 +1,8 @@
 package isep.bcntt.cooking;
 
+import android.app.Activity;
 import android.content.Context;
+import android.support.v4.app.ShareCompat;
 import android.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -20,7 +22,7 @@ import isep.bcntt.cooking.model.Recipe;
 
 public class RecipesAdapter extends RecyclerView.Adapter<RecipesAdapter.recipeAdapterViewHolder> {
 
-    private Context mContext;
+    private final Context mContext;
     private List<Recipe> recipeList;
     private static RecipesAdapterOnClickHandler mRecipeCardClickHandler;
 
@@ -40,7 +42,7 @@ public class RecipesAdapter extends RecyclerView.Adapter<RecipesAdapter.recipeAd
 
     @Override
     public void onBindViewHolder(final recipeAdapterViewHolder holder, int position) {
-        Recipe recipe = recipeList.get(position);
+        final Recipe recipe = recipeList.get(position);
         holder.title.setText(recipe.getName());
         holder.info.setText("Difficulty: " + recipe.getDifficulty() + "  Dish size: " + recipe.getDishesSize());
 
@@ -49,14 +51,14 @@ public class RecipesAdapter extends RecyclerView.Adapter<RecipesAdapter.recipeAd
         holder.overflow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showPopupMenu(holder.overflow);
+                showPopupMenu(holder.overflow, recipe);
             }
         });
 
         holder.thumbnail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mRecipeCardClickHandler.onClick();
+                mRecipeCardClickHandler.onClick(recipe);
             }
         });
     }
@@ -64,12 +66,12 @@ public class RecipesAdapter extends RecyclerView.Adapter<RecipesAdapter.recipeAd
     /**
      * Showing popup menu when tapping on 3 dots
      */
-    private void showPopupMenu(View view) {
+    private void showPopupMenu(View view, Recipe recipe) {
         // inflate menu
         PopupMenu popup = new PopupMenu(mContext, view);
         MenuInflater inflater = popup.getMenuInflater();
         inflater.inflate(R.menu.menu_recipe, popup.getMenu());
-        popup.setOnMenuItemClickListener(new menuRecipeItemClickListener());
+        popup.setOnMenuItemClickListener(new menuRecipeItemClickListener(view, recipe));
         popup.show();
     }
 
@@ -93,7 +95,9 @@ public class RecipesAdapter extends RecyclerView.Adapter<RecipesAdapter.recipeAd
 
         @Override
         public void onClick(View v) {
-            mRecipeCardClickHandler.onClick();
+            int adapterPosition = getAdapterPosition();
+            Recipe recipe = recipeList.get(adapterPosition);
+            mRecipeCardClickHandler.onClick(recipe);
         }
     }
 
@@ -102,7 +106,12 @@ public class RecipesAdapter extends RecyclerView.Adapter<RecipesAdapter.recipeAd
      */
     class menuRecipeItemClickListener implements PopupMenu.OnMenuItemClickListener {
 
-        public menuRecipeItemClickListener() {
+        private View view;
+        private Recipe recipe;
+
+        public menuRecipeItemClickListener(View view, Recipe recipe) {
+            this.view = view;
+            this.recipe = recipe;
         }
 
         @Override
@@ -112,7 +121,12 @@ public class RecipesAdapter extends RecyclerView.Adapter<RecipesAdapter.recipeAd
                     Toast.makeText(mContext, "Add to favourite", Toast.LENGTH_SHORT).show();
                     return true;
                 case R.id.action_play_next:
-                    Toast.makeText(mContext, "Share", Toast.LENGTH_SHORT).show();
+                    ShareCompat.IntentBuilder
+                            .from((Activity) view.getContext())
+                            .setType("text/plain")
+                            .setChooserTitle("Partagez la recette du " + recipe.getName())
+                            .setText("Recette " + recipe.getName() + "\n\n" + recipe.getDescription())
+                            .startChooser();
                     return true;
                 default:
             }
@@ -121,6 +135,6 @@ public class RecipesAdapter extends RecyclerView.Adapter<RecipesAdapter.recipeAd
     }
 
     public interface RecipesAdapterOnClickHandler {
-        void onClick();
+        void onClick(Recipe recipe);
     }
 }

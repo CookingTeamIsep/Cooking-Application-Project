@@ -1,6 +1,9 @@
 package isep.bcntt.cooking.model;
 
-public class Recipe {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class Recipe implements Parcelable {
     private String id;
     private int kcal;
     private int prot;
@@ -84,4 +87,46 @@ public class Recipe {
     public void setDescription(String description) {
         this.description = description;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(id);
+        parcel.writeInt(kcal);
+        parcel.writeInt(prot);
+        parcel.writeInt(calc);
+        parcel.writeString(name);
+        parcel.writeInt(difficulty);
+        parcel.writeInt(dishesSize);
+        parcel.writeString(description);
+    }
+
+    public static final Parcelable.Creator<Recipe> CREATOR = new Parcelable.Creator<Recipe>() {
+        @Override
+        public Recipe createFromParcel(Parcel source) {
+            return new Recipe(source);
+        }
+
+        @Override
+        public Recipe[] newArray(int size) {
+            return new Recipe[size];
+        }
+    };
+
+    public Recipe(Parcel in){
+        this.id = in.readString();
+        this.kcal = in.readInt();
+        this.prot = in.readInt();
+        this.calc = in.readInt();
+        this.name = in.readString();
+        this.difficulty = in.readInt();
+        this.dishesSize = in.readInt();
+        this.description = in.readString();
+    }
+
+
 }
