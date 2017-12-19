@@ -8,7 +8,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.Moshi;
@@ -53,8 +52,18 @@ public class IngredientFragment extends Fragment implements IngredientAdapter.In
     }
 
     @Override
-    public void onClick() {
-        Toast.makeText(getContext(), "test", Toast.LENGTH_SHORT).show();
+    public void onClick(Ingredient i) {
+        if (i.isSelected()) {
+            i.setSelected(false);
+        } else {
+            i.setSelected(true);
+        }
+
+        for (Ingredient ingredient : mIngredientList) {
+            if (ingredient.isSelected()) {
+                System.out.println(ingredient.getName() + " " + ingredient.isSelected());
+            }
+        }
     }
 
     /**

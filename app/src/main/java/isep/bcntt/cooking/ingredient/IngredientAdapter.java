@@ -64,8 +64,8 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
      * @param position The position of the item within the adapter's data set.
      */
     @Override
-    public void onBindViewHolder(final IngredientAdapterViewHolder holder, int position) {
-        Ingredient ingredient = mIngredientList.get(position);
+    public void onBindViewHolder(final IngredientAdapterViewHolder holder, final int position) {
+        final Ingredient ingredient = mIngredientList.get(position);
         holder.name.setText(ingredient.getName());
         holder.checkBox.setChecked(ingredient.isSelected());
         Glide.with(mContext).load("http://localhost:8080/picture/"+ingredient.getName().replace(" ","_")).into(holder.thumbnail);
@@ -73,7 +73,9 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
         holder.thumbnail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mIngredientClickHandler.onClick();
+                Ingredient ingredient = mIngredientList.get(position);
+                mIngredientClickHandler.onClick(ingredient);
+                notifyItemChanged(position);
             }
         });
     }
@@ -90,7 +92,7 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
      * The interface that receives onClick messages.
      */
     public interface IngredientAdapterOnClickHandler {
-        void onClick();
+        void onClick(Ingredient ingredient);
     }
 
     /**
@@ -112,8 +114,9 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
         @Override
         public void onClick(View v) {
             int adapterPosition = getAdapterPosition();
-            /*Ingredient ingredient = mIngredientList.get(adapterPosition);*/
-            mIngredientClickHandler.onClick();
+            Ingredient ingredient = mIngredientList.get(adapterPosition);
+            mIngredientClickHandler.onClick(ingredient);
+            notifyItemChanged(adapterPosition);
         }
     }
 }
