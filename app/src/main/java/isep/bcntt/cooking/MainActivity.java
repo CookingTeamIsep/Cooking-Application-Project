@@ -8,7 +8,6 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.ShareCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -17,7 +16,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import java.util.ArrayList;
+
 import isep.bcntt.cooking.ingredient.IngredientFragment;
+import isep.bcntt.cooking.model.Ingredient;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -34,8 +36,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     showFragment(new IngredientFragment());
                     return true;
                 case R.id.navigation_rechercher:
-                    Intent intent = new Intent(getApplicationContext(), RecipesActivity.class);
-                    startActivity(intent);
+                    goToRecipeSearchActivity();
                     return true;
             }
             return false;
@@ -84,12 +85,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onOptionsItemSelected(MenuItem item) {
         int itemThatWasClickedId = item.getItemId();
         if (itemThatWasClickedId == R.id.action_search) {
-            Intent intent = new Intent(getApplicationContext(), RecipesActivity.class);
-            startActivity(intent);
+            goToRecipeSearchActivity();
             return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void goToRecipeSearchActivity() {
+        ArrayList<String> ingredients = new ArrayList<>();
+        for (Ingredient ingredient : IngredientFragment.mIngredientList) {
+            if (ingredient.isSelected()) {
+                ingredients.add(ingredient.getId());
+            }
+        }
+        Intent intentToStartDetailActivity = new Intent(this, RecipesActivity.class);
+        intentToStartDetailActivity.putStringArrayListExtra("Ingredients", ingredients);
+        startActivity(intentToStartDetailActivity);
     }
 
     @Override

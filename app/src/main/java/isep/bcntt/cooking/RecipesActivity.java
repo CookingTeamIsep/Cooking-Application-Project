@@ -24,8 +24,10 @@ import java.util.List;
 import isep.bcntt.cooking.model.Recipe;
 import okhttp3.Call;
 import okhttp3.Callback;
+import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class RecipesActivity extends AppCompatActivity implements RecipesAdapter.RecipesAdapterOnClickHandler {
@@ -39,12 +41,15 @@ public class RecipesActivity extends AppCompatActivity implements RecipesAdapter
     private RecyclerView mRecyclerView;
     private RecipesAdapter mRecipesAdapter;
     private List<Recipe> mRecipeList;
+    private ArrayList<String> mIngredientsArray;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipes);
         mRecyclerView = findViewById(R.id.rv_recipe);
+
+        mIngredientsArray = getIntent().getExtras().getStringArrayList("Ingredients");
 
         mRecipeList = new ArrayList<>();
 
@@ -54,9 +59,24 @@ public class RecipesActivity extends AppCompatActivity implements RecipesAdapter
     /**
      * Adding few recipes for testing
      */
+    private String getPostBody(ArrayList<String> list) {
+        String body = "{\"ingredientIds\" : [";
+        for (String s : list) {
+            body += "\"" + s + "\",";
+        }
+        body = body.substring(0, body.length() - 1) + "]}";
+        System.out.println(body);
+        return body;
+    }
+
     private void preparerecipes() {
+        String postBody = getPostBody(mIngredientsArray);
+
+        final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+
         Request request = new Request.Builder()
-                .url("http://localhost:8080/recipe/get")
+                .url("http://localhost:8080/recipe/get/withIngredients")
+                .post(RequestBody.create(JSON, postBody))
                 .build();
 
         client.newCall(request).enqueue(new Callback() {
