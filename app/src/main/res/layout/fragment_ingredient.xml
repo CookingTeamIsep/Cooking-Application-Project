@@ -14,7 +14,8 @@
         android:layout_height="match_parent"
         android:layout_width="80dp"
         android:layout_centerHorizontal="true"
-        android:layout_alignParentBottom="true" />
+        android:layout_alignParentBottom="true"
+        android:visibility="invisible"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_ingredient"
