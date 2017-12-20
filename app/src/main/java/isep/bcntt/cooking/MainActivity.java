@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
-                case R.id.navigation_test:
+                case R.id.navigation_mes_recettes:
                     showFragment(new SavedRecipeFragment());
                     return true;
                 case R.id.navigation_mon_frigo:
@@ -108,7 +108,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         int id = item.getItemId();
 
         if (id == R.id.nav_favorites) {
-
+            showFragment(new SavedRecipeFragment());
+            BottomNavigationView navigation = findViewById(R.id.navigation_ingredient_category);
+            navigation.setOnNavigationItemSelectedListener(mainnNavigationItemSelectedListener);
+            navigation.setSelectedItemId(R.id.navigation_mes_recettes);
         } else if (id == R.id.nav_my_account) {
 
         } else if (id == R.id.nav_settings) {
@@ -121,9 +124,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 startActivity(intent);
             }
         } else if (id == R.id.nav_about_cooking) {
-
+            Intent intentToStartDetailActivity = new Intent(this, AboutCookingActivity.class);
+            startActivity(intentToStartDetailActivity);
         } else if (id == R.id.nav_about_dev_team) {
-
+            Intent intentToStartDetailActivity = new Intent(this, AboutDevTeamActivity.class);
+            startActivity(intentToStartDetailActivity);
         }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);

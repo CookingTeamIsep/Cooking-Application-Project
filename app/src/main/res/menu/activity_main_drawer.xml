@@ -7,15 +7,15 @@
         <item
             android:id="@+id/nav_favorites"
             android:icon="@drawable/ic_drawer_favorites_24dp"
-            android:title="Favourites" />
+            android:title="@string/nav_mes_recettes" />
         <item
             android:id="@+id/nav_my_account"
             android:icon="@drawable/ic_drawer_account_24dp"
-            android:title="My Account" />
+            android:title="@string/nav_my_account" />
         <item
             android:id="@+id/nav_settings"
             android:icon="@drawable/ic_drawer_settings_24dp"
-            android:title="Settings" />
+            android:title="@string/nav_settings" />
     </group>
 
     <item android:title="About us">
@@ -23,15 +23,15 @@
             <item
                 android:id="@+id/nav_feedback"
                 android:icon="@drawable/ic_drawer_feedback_24dp"
-                android:title="Feedback" />
+                android:title="@string/nav_feedback" />
             <item
                 android:id="@+id/nav_about_cooking"
                 android:icon="@drawable/ic_drawer_about_cooking_24dp"
-                android:title="About Cooking" />
+                android:title="@string/nav_about_cooking" />
             <item
                 android:id="@+id/nav_about_dev_team"
                 android:icon="@drawable/ic_drawer_about_dev"
-                android:title="About the Dev Team" />
+                android:title="@string/nav_about_dev_team" />
         </menu>
     </item>
 
