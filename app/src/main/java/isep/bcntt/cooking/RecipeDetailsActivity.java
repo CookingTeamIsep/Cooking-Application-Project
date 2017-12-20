@@ -122,10 +122,10 @@ public class RecipeDetailsActivity extends AppCompatActivity {
             if (position == 0) {
                 return PlaceholderFragment.newInstance(
                         recipe.getName() + "\n\n" +
-                                "kcal: " + recipe.getKcal() + "\n\n" +
-                                "prot :" + recipe.getProt() + "\n\n" +
-                                "calc:" + recipe.getCalc() + "\n\n\n\n" +
-                                "Diffulty : " + recipe.getDifficulty() + "/5\n\n" +
+                                "kcal: " + recipe.getKcal() + "\n" +
+                                "prot :" + recipe.getProt() + "\n" +
+                                "calc:" + recipe.getCalc() + "\n\n" +
+                                "Diffulty : " + recipe.getDifficulty() + "/5\n" +
                                 " Dishes size: " + recipe.getDishesSize() + "/5");
             } else if (position == 1) {
                 List<String> ingredientsInRecipe = new ArrayList<>();
