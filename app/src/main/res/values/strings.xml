@@ -15,4 +15,35 @@
     <string name="wording_button_singup">Create Account</string>
     <string name="wording_goto_login">Already a member? Login</string>
 
+    <!--menu-->
+    <string name="menu_search">search</string>
+
+    <!--error-->
+    <string name="error_message">An error has occurred. Try again</string>
+
+    <!--Recipe result menu-->
+    <string name="action_add_favourite">Add to Favourites</string>
+    <string name="action_share">Share</string>
+    <string name="action_delete">Delete</string>
+
+    <!--Navigation drawer-->
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <!-- about oooking -->
+    <string name="about_cooking">Cooking est une application qui met à disposition des utilisateurs un certain nombre de recettes de cuisine. Celles-ci sont trouvables grâce à une fonction de recherche basique ou en sélectionnant directement les ingrédients que l’on a déjà dans son frigo. Cooking va principalement cibler les étudiants, les jeunes célibataires ou les couples ayant envie de vider ce qu’il reste dans leur frigo, ainsi nos recettes sont généralement calibrées pour 2 personnes. Cette application a été développée dans le cadre d\'un projet étudiant, nos recettes ont été écrites par nos soins et peuvent donc être potentiellement dangeureuses pour tout type de régime.</string>
+
+    <!-- about dev team -->
+    <string name="about_dev_team">Qui sommes nous ? L\'équipe cooking est consituée de 5 membres : Bilal Théophile Timothée Nicolas et Cédric. Nous sommes acutellement étudiants et alternants à l\'ISEP. Nous avons créé cette application et ses recettes avec amour. Si vous avez aimé notre travail, n'hésitez pas à nous le faire savoir en nous mettant 5 étoiles dans le store !</string>
+
+    <!-- test -->
+    <string name="random_text_long">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed imperdiet dui eu turpis dapibus, at lacinia magna interdum. Cras hendrerit vitae erat at pharetra. Sed consequat sed ante quis lacinia. Aenean ornare semper congue. Donec sagittis congue tempus. Donec gravida urna quis nunc rhoncus, a hendrerit ligula maximus. Aenean varius diam mauris, vitae congue ex blandit id. Nunc vehicula dolor sit amet urna porttitor, at lobortis elit feugiat. Morbi pharetra libero tempor aliquam mollis. Donec a malesuada metus, vitae ultrices libero. Quisque massa felis, finibus non ex nec, varius imperdiet lorem. Vestibulum porta lectus enim, in dictum nisl auctor id. Nunc tristique sem urna, in convallis sem vulputate pellentesque. Praesent volutpat egestas mauris non ultricies. Donec rutrum sollicitudin tellus, ac pellentesque mi sollicitudin a. Integer in cursus lacus. Ut sit amet semper enim. Vestibulum placerat ligula sed neque ultricies, vel vestibulum elit convallis. Sed viverra faucibus diam, vitae volutpat tellus sagittis sed. Nam fringilla tortor eget quam condimentum, quis porta ipsum pharetra. Phasellus laoreet ex eu augue lobortis, malesuada consectetur arcu ornare. Vivamus eu congue orci. Nullam at pretium mi. Fusce auctor orci non diam molestie, quis tristique ipsum vulputate. Morbi porta, nisl non sodales dignissim, leo quam cursus est, in egestas est ligula in est. Cras sagittis tellus ut lorem euismod, non sodales risus volutpat. Donec egestas gravida dolor, sed tincidunt nisl molestie eu. Proin at felis nisi. Cras lectus nibh, finibus quis accumsan ut, facilisis vel turpis. Aenean sed cursus leo. In sit amet consectetur est.. Cras lectus nibh, finibus quis accumsan ut, facilisis vel turpis. Aenean sed cursus leo. In sit amet consectetur est.</string>
+
+    <!--nav drawer -->
+    <string name="nav_mes_recettes">Mes recettes</string>
+    <string name="nav_my_account">Mon compte</string>
+    <string name="nav_settings">Settings</string>
+    <string name="nav_feedback">Feedback</string>
+    <string name="nav_about_cooking">About Cooking</string>
+    <string name="nav_about_dev_team">About the Dev Team</string>
 </resources>
