@@ -1,4 +1,4 @@
-package isep.bcntt.cooking.ingredient;
+package isep.bcntt.cooking;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -18,7 +18,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-import isep.bcntt.cooking.R;
+import isep.bcntt.cooking.adapter.IngredientAdapter;
 import isep.bcntt.cooking.model.Ingredient;
 import isep.bcntt.cooking.model.Tool;
 import okhttp3.Call;
@@ -48,6 +48,7 @@ public class IngredientFragment extends Fragment implements IngredientAdapter.In
         View rootView = inflater.inflate(R.layout.fragment_ingredient, container, false);
 
         mIngredientList = new ArrayList<>();
+        mToolList = new ArrayList<>();
         mRecyclerView = rootView.findViewById(R.id.rv_ingredient);
 
         prepareIngredients();
@@ -71,64 +72,67 @@ public class IngredientFragment extends Fragment implements IngredientAdapter.In
         }
     }
 
-    /**
-     * Adding few Ingredients for testing
-     */
     private void prepareIngredients() {
 
-        Request request = new Request.Builder()
-                .url("http://localhost:8080/ingredient/get")
-                .build();
+        if (mIngredientList.size() > 0) {
+            mIngredientAdapter.notifyDataSetChanged();
+        } else {
+            Request request = new Request.Builder()
+                    .url("http://localhost:8080/ingredient/get")
+                    .build();
 
-        client.newCall(request).enqueue(new Callback() {
+            client.newCall(request).enqueue(new Callback() {
 
-            @Override
-            public void onFailure(Call call, IOException e) {
-                e.printStackTrace();
-            }
+                @Override
+                public void onFailure(Call call, IOException e) {
+                    e.printStackTrace();
+                }
 
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
+                @Override
+                public void onResponse(Call call, Response response) throws IOException {
 
-                if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
-                mIngredientList = gistJsonAdapter.fromJson(response.body().source());
+                    if (!response.isSuccessful())
+                        throw new IOException("Unexpected code " + response);
+                    mIngredientList = gistJsonAdapter.fromJson(response.body().source());
 
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        mIngredientAdapter = new IngredientAdapter(getContext(), mIngredientList, IngredientFragment.this);
-                        mLayoutManager = new LinearLayoutManager(getActivity());
-                        mRecyclerView.setLayoutManager(mLayoutManager);
-                        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-                        mRecyclerView.setAdapter(mIngredientAdapter);
-                        mIngredientAdapter.notifyDataSetChanged();
-                    }
-                });
-            }
-        });
-
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            mIngredientAdapter = new IngredientAdapter(getContext(), mIngredientList, IngredientFragment.this);
+                            mLayoutManager = new LinearLayoutManager(getActivity());
+                            mRecyclerView.setLayoutManager(mLayoutManager);
+                            mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+                            mRecyclerView.setAdapter(mIngredientAdapter);
+                            mIngredientAdapter.notifyDataSetChanged();
+                        }
+                    });
+                }
+            });
+        }
     }
 
     private void prepareTools() {
 
-        Request request = new Request.Builder()
-                .url("http://localhost:8080/tool/get")
-                .build();
+        if (mToolList.size() == 0) {
+            Request request = new Request.Builder()
+                    .url("http://localhost:8080/tool/get")
+                    .build();
 
-        client.newCall(request).enqueue(new Callback() {
+            client.newCall(request).enqueue(new Callback() {
 
-            @Override
-            public void onFailure(Call call, IOException e) {
-                e.printStackTrace();
-            }
+                @Override
+                public void onFailure(Call call, IOException e) {
+                    e.printStackTrace();
+                }
 
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
+                @Override
+                public void onResponse(Call call, Response response) throws IOException {
 
-                if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
-                mToolList = toolJsonAdapter.fromJson(response.body().source());
-            }
-        });
-
+                    if (!response.isSuccessful())
+                        throw new IOException("Unexpected code " + response);
+                    mToolList = toolJsonAdapter.fromJson(response.body().source());
+                }
+            });
+        }
     }
 }

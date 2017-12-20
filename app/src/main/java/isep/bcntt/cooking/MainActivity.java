@@ -18,7 +18,6 @@ import android.view.MenuItem;
 
 import java.util.ArrayList;
 
-import isep.bcntt.cooking.ingredient.IngredientFragment;
 import isep.bcntt.cooking.model.Ingredient;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -30,7 +29,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_test:
-                    showFragment(new TestFragment());
+                    showFragment(new SavedRecipeFragment());
                     return true;
                 case R.id.navigation_mon_frigo:
                     showFragment(new IngredientFragment());

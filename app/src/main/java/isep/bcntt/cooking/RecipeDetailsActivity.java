@@ -1,5 +1,6 @@
 package isep.bcntt.cooking;
 
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -22,7 +23,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import isep.bcntt.cooking.ingredient.IngredientFragment;
+import isep.bcntt.cooking.data.DbUtils;
+import isep.bcntt.cooking.data.SavedRecipeDbHelper;
 import isep.bcntt.cooking.model.Ingredient;
 import isep.bcntt.cooking.model.Recipe;
 import isep.bcntt.cooking.model.Tool;
@@ -30,6 +32,7 @@ import isep.bcntt.cooking.model.Tool;
 public class RecipeDetailsActivity extends AppCompatActivity {
 
     private Recipe recipe;
+    private SQLiteDatabase mDb;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,10 +59,14 @@ public class RecipeDetailsActivity extends AppCompatActivity {
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
 
+        SavedRecipeDbHelper dbHelper = new SavedRecipeDbHelper(this);
+        mDb = dbHelper.getWritableDatabase();
+
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                DbUtils.addToSavedRecipe(mDb, recipe);
                 Snackbar.make(view, "Recipe saved", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }

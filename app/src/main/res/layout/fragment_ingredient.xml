@@ -6,16 +6,16 @@
     android:layout_height="match_parent"
     android:background="@color/viewBackground"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="isep.bcntt.cooking.ingredient.IngredientFragment"
+    tools:context="isep.bcntt.cooking.IngredientFragment"
     tools:showIn="@layout/activity_main">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_ingredient"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="?attr/actionBarSize"
-        android:paddingBottom="?attr/actionBarSize"
         android:clipToPadding="false"
+        android:paddingBottom="?attr/actionBarSize"
+        android:paddingTop="?attr/actionBarSize"
         android:scrollbars="vertical" />
 
 </RelativeLayout>

@@ -4,6 +4,17 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class Recipe implements Parcelable {
+    public static final Parcelable.Creator<Recipe> CREATOR = new Parcelable.Creator<Recipe>() {
+        @Override
+        public Recipe createFromParcel(Parcel source) {
+            return new Recipe(source);
+        }
+
+        @Override
+        public Recipe[] newArray(int size) {
+            return new Recipe[size];
+        }
+    };
     private String id;
     private int kcal;
     private int prot;
@@ -14,6 +25,35 @@ public class Recipe implements Parcelable {
     private int dishesSize;
     private String description;
     private String[] ingredientsId;
+    private String[] toolsId;
+
+    public Recipe(String id, int kcal, int prot, int calc, int carbs, String name, int difficulty, int dishesSize, String description, String[] ingredientsId, String[] toolsId) {
+        this.id = id;
+        this.kcal = kcal;
+        this.prot = prot;
+        this.calc = calc;
+        this.carbs = carbs;
+        this.name = name;
+        this.difficulty = difficulty;
+        this.dishesSize = dishesSize;
+        this.description = description;
+        this.ingredientsId = ingredientsId;
+        this.toolsId = toolsId;
+    }
+
+    public Recipe(Parcel in) {
+        this.id = in.readString();
+        this.kcal = in.readInt();
+        this.prot = in.readInt();
+        this.calc = in.readInt();
+        this.carbs = in.readInt();
+        this.name = in.readString();
+        this.difficulty = in.readInt();
+        this.dishesSize = in.readInt();
+        this.description = in.readString();
+        this.ingredientsId = in.createStringArray();
+        this.toolsId = in.createStringArray();
+    }
 
     public int getCarbs() {
         return carbs;
@@ -37,19 +77,6 @@ public class Recipe implements Parcelable {
 
     public void setToolsId(String[] toolsId) {
         this.toolsId = toolsId;
-    }
-
-    private String[] toolsId;
-
-    public Recipe(String id, int kcal, int prot, int calc, String name, int difficulty, int dishesSize, String description) {
-        this.id = id;
-        this.kcal = kcal;
-        this.prot = prot;
-        this.calc = calc;
-        this.name = name;
-        this.difficulty = difficulty;
-        this.dishesSize = dishesSize;
-        this.description = description;
     }
 
     public String getId() {
@@ -134,32 +161,6 @@ public class Recipe implements Parcelable {
         parcel.writeString(description);
         parcel.writeStringArray(ingredientsId);
         parcel.writeStringArray(toolsId);
-    }
-
-    public static final Parcelable.Creator<Recipe> CREATOR = new Parcelable.Creator<Recipe>() {
-        @Override
-        public Recipe createFromParcel(Parcel source) {
-            return new Recipe(source);
-        }
-
-        @Override
-        public Recipe[] newArray(int size) {
-            return new Recipe[size];
-        }
-    };
-
-    public Recipe(Parcel in){
-        this.id = in.readString();
-        this.kcal = in.readInt();
-        this.prot = in.readInt();
-        this.calc = in.readInt();
-        this.carbs = in.readInt();
-        this.name = in.readString();
-        this.difficulty = in.readInt();
-        this.dishesSize = in.readInt();
-        this.description = in.readString();
-        this.ingredientsId = in.createStringArray();
-        this.toolsId = in.createStringArray();
     }
 
 

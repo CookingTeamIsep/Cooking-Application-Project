@@ -21,6 +21,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
+import isep.bcntt.cooking.adapter.RecipesAdapter;
 import isep.bcntt.cooking.model.Recipe;
 import okhttp3.Call;
 import okhttp3.Callback;

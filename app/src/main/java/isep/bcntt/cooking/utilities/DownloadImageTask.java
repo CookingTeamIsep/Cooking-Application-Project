@@ -8,27 +8,27 @@ import android.widget.ImageView;
 import java.io.InputStream;
 import java.net.URL;
 
-public class DownloadImageTask extends AsyncTask<String,Void,Bitmap> {
+public class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
     ImageView imageView;
 
-    public DownloadImageTask(ImageView imageView){
+    public DownloadImageTask(ImageView imageView) {
         this.imageView = imageView;
     }
 
 
-    protected Bitmap doInBackground(String...urls){
+    protected Bitmap doInBackground(String... urls) {
         String urlOfImage = urls[0];
         Bitmap logo = null;
-        try{
+        try {
             InputStream is = new URL(urlOfImage).openStream();
             logo = BitmapFactory.decodeStream(is);
-        }catch(Exception e){ // Catch the download exception
+        } catch (Exception e) { // Catch the download exception
             e.printStackTrace();
         }
         return logo;
     }
 
-    protected void onPostExecute(Bitmap result){
+    protected void onPostExecute(Bitmap result) {
         imageView.setImageBitmap(result);
     }
 }

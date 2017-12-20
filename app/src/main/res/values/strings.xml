@@ -24,6 +24,7 @@
     <!--Recipe result menu-->
     <string name="action_add_favourite">Add to Favourites</string>
     <string name="action_share">Share</string>
+    <string name="action_delete">Delete</string>
 
     <!--Navigation drawer-->
     <string name="navigation_drawer_open">Open navigation drawer</string>
