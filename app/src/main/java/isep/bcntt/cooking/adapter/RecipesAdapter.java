@@ -1,9 +1,8 @@
-package isep.bcntt.cooking;
+package isep.bcntt.cooking.adapter;
 
 import android.app.Activity;
 import android.content.Context;
 import android.support.v4.app.ShareCompat;
-import android.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
@@ -11,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,13 +18,14 @@ import com.bumptech.glide.Glide;
 
 import java.util.List;
 
+import isep.bcntt.cooking.R;
 import isep.bcntt.cooking.model.Recipe;
 
 public class RecipesAdapter extends RecyclerView.Adapter<RecipesAdapter.recipeAdapterViewHolder> {
 
+    private static RecipesAdapterOnClickHandler mRecipeCardClickHandler;
     private final Context mContext;
     private List<Recipe> recipeList;
-    private static RecipesAdapterOnClickHandler mRecipeCardClickHandler;
 
     public RecipesAdapter(Context mContext, List<Recipe> recipeList, RecipesAdapterOnClickHandler clickHandler) {
         this.mContext = mContext;
@@ -47,7 +48,7 @@ public class RecipesAdapter extends RecyclerView.Adapter<RecipesAdapter.recipeAd
         holder.info.setText("Difficulty: " + recipe.getDifficulty() + "  Dish size: " + recipe.getDishesSize());
 
         // loading recipe cover using Glide library
-        Glide.with(mContext).load("http://localhost:8080/picture/"+recipe.getName().replace(" ","_")).into(holder.thumbnail);
+        Glide.with(mContext).load("http://localhost:8080/picture/" + recipe.getName().replace(" ", "_")).into(holder.thumbnail);
         holder.overflow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -78,6 +79,10 @@ public class RecipesAdapter extends RecyclerView.Adapter<RecipesAdapter.recipeAd
     @Override
     public int getItemCount() {
         return recipeList.size();
+    }
+
+    public interface RecipesAdapterOnClickHandler {
+        void onClick(Recipe recipe);
     }
 
     public class recipeAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -120,7 +125,7 @@ public class RecipesAdapter extends RecyclerView.Adapter<RecipesAdapter.recipeAd
                 case R.id.action_add_favourite:
                     Toast.makeText(mContext, "Add to favourite", Toast.LENGTH_SHORT).show();
                     return true;
-                case R.id.action_play_next:
+                case R.id.action_share:
                     ShareCompat.IntentBuilder
                             .from((Activity) view.getContext())
                             .setType("text/plain")
@@ -132,9 +137,5 @@ public class RecipesAdapter extends RecyclerView.Adapter<RecipesAdapter.recipeAd
             }
             return false;
         }
-    }
-
-    public interface RecipesAdapterOnClickHandler {
-        void onClick(Recipe recipe);
     }
 }

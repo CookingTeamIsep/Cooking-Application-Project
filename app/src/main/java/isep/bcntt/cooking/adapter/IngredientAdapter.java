@@ -1,4 +1,4 @@
-package isep.bcntt.cooking.ingredient;
+package isep.bcntt.cooking.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
