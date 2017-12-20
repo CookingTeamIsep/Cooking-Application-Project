@@ -15,6 +15,7 @@ public class Recipe implements Parcelable {
             return new Recipe[size];
         }
     };
+
     private String id;
     private int kcal;
     private int prot;
@@ -26,6 +27,7 @@ public class Recipe implements Parcelable {
     private String description;
     private String[] ingredientsId;
     private String[] toolsId;
+    private long idDb;
 
     public Recipe(String id, int kcal, int prot, int calc, int carbs, String name, int difficulty, int dishesSize, String description, String[] ingredientsId, String[] toolsId) {
         this.id = id;
@@ -41,6 +43,21 @@ public class Recipe implements Parcelable {
         this.toolsId = toolsId;
     }
 
+    public Recipe(String id, int kcal, int prot, int calc, int carbs, String name, int difficulty, int dishesSize, String description, String[] ingredientsId, String[] toolsId, long idDb) {
+        this.id = id;
+        this.kcal = kcal;
+        this.prot = prot;
+        this.calc = calc;
+        this.carbs = carbs;
+        this.name = name;
+        this.difficulty = difficulty;
+        this.dishesSize = dishesSize;
+        this.description = description;
+        this.ingredientsId = ingredientsId;
+        this.toolsId = toolsId;
+        this.idDb = idDb;
+    }
+
     public Recipe(Parcel in) {
         this.id = in.readString();
         this.kcal = in.readInt();
@@ -53,6 +70,14 @@ public class Recipe implements Parcelable {
         this.description = in.readString();
         this.ingredientsId = in.createStringArray();
         this.toolsId = in.createStringArray();
+    }
+
+    public long getIdDb() {
+        return idDb;
+    }
+
+    public void setIdDb(long idDb) {
+        this.idDb = idDb;
     }
 
     public int getCarbs() {
@@ -162,6 +187,4 @@ public class Recipe implements Parcelable {
         parcel.writeStringArray(ingredientsId);
         parcel.writeStringArray(toolsId);
     }
-
-
 }

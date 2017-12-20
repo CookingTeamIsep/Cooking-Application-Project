@@ -85,9 +85,14 @@ public class DbUtils {
                     mCursor.getInt(mCursor.getColumnIndex(SavedRecipeContract.SavedRecipeEntry.COLUMN_DISHESSIZE)),
                     mCursor.getString(mCursor.getColumnIndex(SavedRecipeContract.SavedRecipeEntry.COLUMN_DESCRIPTION)),
                     convertStringToArray(mCursor.getString(mCursor.getColumnIndex(SavedRecipeContract.SavedRecipeEntry.COLUMN_INGREDIENTSID))),
-                    convertStringToArray(mCursor.getString(mCursor.getColumnIndex(SavedRecipeContract.SavedRecipeEntry.COLUMN_TOOLSID)))
+                    convertStringToArray(mCursor.getString(mCursor.getColumnIndex(SavedRecipeContract.SavedRecipeEntry.COLUMN_TOOLSID))),
+                    mCursor.getLong(mCursor.getColumnIndex(SavedRecipeContract.SavedRecipeEntry._ID))
             ));
         }
         return mRecipeList;
+    }
+
+    public static boolean removeSavedRecipe(SQLiteDatabase db, long id) {
+        return db.delete(SavedRecipeContract.SavedRecipeEntry.TABLE_NAME, SavedRecipeContract.SavedRecipeEntry._ID + "=" + id, null) > 0;
     }
 }

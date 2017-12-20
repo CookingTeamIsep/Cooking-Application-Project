@@ -19,6 +19,8 @@ import com.bumptech.glide.Glide;
 import java.util.List;
 
 import isep.bcntt.cooking.R;
+import isep.bcntt.cooking.data.DbUtils;
+import isep.bcntt.cooking.data.SavedRecipeDbHelper;
 import isep.bcntt.cooking.model.Recipe;
 
 public class RecipesAdapter extends RecyclerView.Adapter<RecipesAdapter.recipeAdapterViewHolder> {
@@ -123,7 +125,8 @@ public class RecipesAdapter extends RecyclerView.Adapter<RecipesAdapter.recipeAd
         public boolean onMenuItemClick(MenuItem menuItem) {
             switch (menuItem.getItemId()) {
                 case R.id.action_add_favourite:
-                    Toast.makeText(mContext, "Add to favourite", Toast.LENGTH_SHORT).show();
+                    DbUtils.addToSavedRecipe(new SavedRecipeDbHelper(mContext).getWritableDatabase(), recipe);
+                    Toast.makeText(mContext, "Recipe saved", Toast.LENGTH_SHORT).show();
                     return true;
                 case R.id.action_share:
                     ShareCompat.IntentBuilder

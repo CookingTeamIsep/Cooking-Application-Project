@@ -19,17 +19,19 @@ import com.bumptech.glide.Glide;
 import java.util.List;
 
 import isep.bcntt.cooking.R;
+import isep.bcntt.cooking.data.DbUtils;
+import isep.bcntt.cooking.data.SavedRecipeDbHelper;
 import isep.bcntt.cooking.model.Recipe;
 
 public class SavedRecipeAdapter extends RecyclerView.Adapter<SavedRecipeAdapter.SavedRecipeAdapterViewHolder> {
 
     private static SavedRecipeAdapterOnClickHandler mRecipeCardClickHandler;
     private final Context mContext;
-    private List<Recipe> recipeList;
+    private List<Recipe> mSavedRecipeList;
 
-    public SavedRecipeAdapter(Context mContext, List<Recipe> recipeList, SavedRecipeAdapterOnClickHandler clickHandler) {
+    public SavedRecipeAdapter(Context mContext, List<Recipe> savedRecipeList, SavedRecipeAdapterOnClickHandler clickHandler) {
         this.mContext = mContext;
-        this.recipeList = recipeList;
+        this.mSavedRecipeList = savedRecipeList;
         mRecipeCardClickHandler = clickHandler;
     }
 
@@ -42,17 +44,17 @@ public class SavedRecipeAdapter extends RecyclerView.Adapter<SavedRecipeAdapter.
     }
 
     @Override
-    public void onBindViewHolder(final SavedRecipeAdapterViewHolder holder, int position) {
-        final Recipe recipe = recipeList.get(position);
+    public void onBindViewHolder(final SavedRecipeAdapterViewHolder holder, final int position) {
+        final Recipe recipe = mSavedRecipeList.get(position);
         holder.title.setText(recipe.getName());
-        holder.info.setText("Difficulty: " + recipe.getDifficulty() + "  Dish size: " + recipe.getDishesSize());
+        holder.info.setText("Difficulty: " + recipe.getDifficulty() + "  Dish size: " + recipe.getDishesSize() + position);
 
         // loading recipe cover using Glide library
         Glide.with(mContext).load("http://localhost:8080/picture/" + recipe.getName().replace(" ", "_")).into(holder.thumbnail);
         holder.overflow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showPopupMenu(holder.overflow, recipe);
+                showPopupMenu(holder.overflow, recipe, position);
             }
         });
 
@@ -67,18 +69,18 @@ public class SavedRecipeAdapter extends RecyclerView.Adapter<SavedRecipeAdapter.
     /**
      * Showing popup menu when tapping on 3 dots
      */
-    private void showPopupMenu(View view, Recipe recipe) {
+    private void showPopupMenu(View view, Recipe recipe, int position) {
         // inflate menu
         PopupMenu popup = new PopupMenu(mContext, view);
         MenuInflater inflater = popup.getMenuInflater();
         inflater.inflate(R.menu.menu_saved_recipe, popup.getMenu());
-        popup.setOnMenuItemClickListener(new menuRecipeItemClickListener(view, recipe));
+        popup.setOnMenuItemClickListener(new menuRecipeItemClickListener(view, recipe, position));
         popup.show();
     }
 
     @Override
     public int getItemCount() {
-        return recipeList.size();
+        return mSavedRecipeList.size();
     }
 
     public interface SavedRecipeAdapterOnClickHandler {
@@ -101,7 +103,7 @@ public class SavedRecipeAdapter extends RecyclerView.Adapter<SavedRecipeAdapter.
         @Override
         public void onClick(View v) {
             int adapterPosition = getAdapterPosition();
-            Recipe recipe = recipeList.get(adapterPosition);
+            Recipe recipe = mSavedRecipeList.get(adapterPosition);
             mRecipeCardClickHandler.onClick(recipe);
         }
     }
@@ -113,10 +115,12 @@ public class SavedRecipeAdapter extends RecyclerView.Adapter<SavedRecipeAdapter.
 
         private View view;
         private Recipe recipe;
+        private int position;
 
-        public menuRecipeItemClickListener(View view, Recipe recipe) {
+        public menuRecipeItemClickListener(View view, Recipe recipe, int position) {
             this.view = view;
             this.recipe = recipe;
+            this.position = position;
         }
 
         @Override
@@ -131,7 +135,11 @@ public class SavedRecipeAdapter extends RecyclerView.Adapter<SavedRecipeAdapter.
                             .startChooser();
                     return true;
                 case R.id.action_delete:
-                    Toast.makeText(mContext, "Delete coming soon", Toast.LENGTH_SHORT).show();
+                    DbUtils.removeSavedRecipe(new SavedRecipeDbHelper(mContext).getWritableDatabase(), recipe.getIdDb());
+                    Toast.makeText(mContext, "Delete success", Toast.LENGTH_SHORT).show();
+                    mSavedRecipeList.remove(position);
+                    notifyItemRemoved(position);
+                    notifyItemRangeChanged(position, getItemCount());
                     return true;
                 default:
             }
