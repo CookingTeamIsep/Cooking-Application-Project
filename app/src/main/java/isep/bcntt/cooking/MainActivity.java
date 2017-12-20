@@ -113,7 +113,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             navigation.setOnNavigationItemSelectedListener(mainnNavigationItemSelectedListener);
             navigation.setSelectedItemId(R.id.navigation_mes_recettes);
         } else if (id == R.id.nav_my_account) {
-
+            Intent intentToStartDetailActivity = new Intent(this, LoginActivity.class);
+            startActivity(intentToStartDetailActivity);
         } else if (id == R.id.nav_settings) {
 
         } else if (id == R.id.nav_feedback) {

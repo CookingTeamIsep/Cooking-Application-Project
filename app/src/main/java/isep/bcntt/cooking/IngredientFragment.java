@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.Moshi;
@@ -41,6 +42,7 @@ public class IngredientFragment extends Fragment implements IngredientAdapter.In
     protected RecyclerView.LayoutManager mLayoutManager;
     private RecyclerView mRecyclerView;
     private IngredientAdapter mIngredientAdapter;
+    private ProgressBar mLoadingIndicator;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -50,6 +52,7 @@ public class IngredientFragment extends Fragment implements IngredientAdapter.In
         mIngredientList = new ArrayList<>();
         mToolList = new ArrayList<>();
         mRecyclerView = rootView.findViewById(R.id.rv_ingredient);
+        mLoadingIndicator = rootView.findViewById(R.id.pb_loading_indicator_ing);
 
         prepareIngredients();
         prepareTools();
@@ -77,6 +80,7 @@ public class IngredientFragment extends Fragment implements IngredientAdapter.In
         if (mIngredientList.size() > 0) {
             mIngredientAdapter.notifyDataSetChanged();
         } else {
+            mLoadingIndicator.setVisibility(View.VISIBLE);
             Request request = new Request.Builder()
                     .url("http://localhost:8080/ingredient/get")
                     .build();
@@ -98,6 +102,7 @@ public class IngredientFragment extends Fragment implements IngredientAdapter.In
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
+                            mLoadingIndicator.setVisibility(View.INVISIBLE);
                             mIngredientAdapter = new IngredientAdapter(getContext(), mIngredientList, IngredientFragment.this);
                             mLayoutManager = new LinearLayoutManager(getActivity());
                             mRecyclerView.setLayoutManager(mLayoutManager);
